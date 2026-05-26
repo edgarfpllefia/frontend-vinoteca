@@ -1,16 +1,54 @@
-# React + Vite
+# Vinoteca — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación React + Vite para la tienda online de vinos y cervezas.
 
-Currently, two official plugins are available:
+## Instalación
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+```
 
-## React Compiler
+## Variables de entorno
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Crea un archivo `.env` en la raíz con:
 
-## Expanding the ESLint configuration
+```env
+VITE_API_URL=http://localhost:3001
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+En producción, cambia la URL por la del backend desplegado.
+
+## Ejecución
+
+```bash
+# Desarrollo
+npm run dev
+
+# Build de producción
+npm run build
+```
+
+## Estructura
+
+```
+src/
+├── components/   # Navbar, Footer, ProductCard, ProtectedRoute, Paginacion
+├── context/      # AuthContext (sesión) y CartContext (carrito)
+├── hooks/        # usePaginacion
+├── pages/        # Vistas públicas y de usuario
+│   └── admin/    # Dashboard admin/editor
+└── services/     # Llamadas a la API
+```
+
+## Funcionalidades
+
+- Catálogo público de vinos y cervezas con detalle
+- Registro con foto de perfil (multipart/form-data)
+- Login con persistencia de sesión (JWT en localStorage)
+- Carrito de compra con gestión de cantidades
+- Creación de pedidos con confirmación por email
+- Historial de pedidos del usuario (`/mis-pedidos`)
+- Edición de perfil (email y contraseña)
+- Dashboard admin/editor: CRUD completo de productos
+- Dashboard admin: gestión de usuarios y cambio de roles
+- Rutas protegidas por rol (usuari / editor / admin)

@@ -11,6 +11,7 @@ import VinoDetalle from './pages/VinoDetalle'
 import CervezaDetalle from './pages/CervezaDetalle'
 import Carrito from './pages/Carrito'
 import Perfil from './pages/Perfil'
+import MisPedidos from './pages/MisPedidos'
 import SobreNosotros from './pages/SobreNosotros'
 import Contacto from './pages/Contacto'
 import AdminLayout from './pages/admin/AdminLayout'
@@ -55,6 +56,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Perfil />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mis-pedidos"
+            element={
+              <ProtectedRoute>
+                <MisPedidos />
               </ProtectedRoute>
             }
           />

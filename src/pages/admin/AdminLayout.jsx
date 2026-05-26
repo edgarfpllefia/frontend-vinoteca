@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink, Outlet, Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
@@ -38,6 +39,7 @@ const sideLinks = (esAdmin) => [
 export default function AdminLayout() {
   const { esAdmin, esEditor, usuario } = useAuth();
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   if (!esEditor) return <Navigate to="/" replace />;
 
@@ -46,8 +48,25 @@ export default function AdminLayout() {
 
   return (
     <div className="h-screen flex overflow-hidden" style={{ backgroundColor: "#f4f5f7" }}>
+
+      {/* Overlay móvil */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-20 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-56 shrink-0 bg-[var(--color-wine)] flex flex-col">
+      <aside
+        className={`
+          fixed md:static inset-y-0 left-0 z-30
+          w-56 shrink-0 bg-[var(--color-wine)] flex flex-col
+          transform transition-transform duration-200
+          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0
+        `}
+      >
         <div className="px-6 py-6 border-b border-white/10">
           <p className="text-[var(--color-gold)] text-xs tracking-widest uppercase mb-1">Panel</p>
           <p className="text-white font-semibold text-sm" style={{ fontFamily: "var(--font-serif)" }}>
@@ -60,6 +79,7 @@ export default function AdminLayout() {
             <NavLink
               key={link.to}
               to={link.to}
+              onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2.5 rounded text-sm transition-colors ${
                   isActive
@@ -83,10 +103,21 @@ export default function AdminLayout() {
       {/* Contenido */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar */}
-        <header className="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between">
-          <h1 className="text-base font-semibold text-gray-800" style={{ fontFamily: "var(--font-serif)" }}>
-            {currentSection}
-          </h1>
+        <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {/* Botón hamburguesa solo en móvil */}
+            <button
+              className="md:hidden p-1.5 rounded text-gray-500 hover:bg-gray-100 transition"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            </button>
+            <h1 className="text-base font-semibold text-gray-800" style={{ fontFamily: "var(--font-serif)" }}>
+              {currentSection}
+            </h1>
+          </div>
           <NavLink
             to="/"
             className="text-xs text-gray-400 hover:text-gray-700 transition flex items-center gap-1.5"
@@ -98,7 +129,7 @@ export default function AdminLayout() {
           </NavLink>
         </header>
 
-        <main className="flex-1 px-8 py-8 overflow-y-auto">
+        <main className="flex-1 px-4 md:px-8 py-6 md:py-8 overflow-y-auto">
           <Outlet />
         </main>
       </div>

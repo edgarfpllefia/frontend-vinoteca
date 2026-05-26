@@ -5,3 +5,5 @@ export const crearPedido = (vinos, cervezas) =>
     method: "POST",
     body: JSON.stringify({ vinos, cervezas }),
   });
+
+export const getMisPedidos = () => apiFetch("/pedidos/me");
