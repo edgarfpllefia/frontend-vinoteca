@@ -7,7 +7,6 @@ export async function apiFetch(endpoint, options = {}) {
     ...options.headers,
   };
 
-  // Solo añadir Content-Type si no es FormData
   if (!(options.body instanceof FormData)) {
     headers["Content-Type"] = "application/json";
   }
@@ -20,6 +19,9 @@ export async function apiFetch(endpoint, options = {}) {
     ...options,
     headers,
   });
+
+  // 204 No Content — no hay cuerpo que parsear
+  if (res.status === 204) return null;
 
   const data = await res.json();
 

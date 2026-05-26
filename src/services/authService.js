@@ -9,8 +9,5 @@ export const login = (email, password) =>
 export const registro = (formData) =>
   apiFetch("/auth/registro", { method: "POST", body: formData });
 
-export const updatePerfil = (data) =>
-  apiFetch("/auth/perfil", {
-    method: "PUT",
-    body: JSON.stringify(data),
-  });
+export const updatePerfil = (formData) =>
+  apiFetch("/auth/perfil", { method: "PUT", body: formData });

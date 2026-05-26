@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getMisPedidos } from "../services/pedidosService";
-import { BASE_UPLOADS } from "../config";
+import { getImageUrl } from "../config";
 
 export default function MisPedidos() {
   const [pedidos, setPedidos] = useState([]);
@@ -47,19 +47,14 @@ export default function MisPedidos() {
               ...pedido.cervezas.map((c) => ({ ...c, tipo: "cerveza" })),
             ];
 
-            const total = items.reduce((acc, i) => {
-              return acc + (i.producto?.preu ?? 0) * i.cantidad;
-            }, 0);
+            const total = items.reduce((acc, i) => acc + (i.producto?.preu ?? 0) * i.cantidad, 0);
 
             const fecha = new Date(pedido.createdAt).toLocaleDateString("es-ES", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
+              day: "numeric", month: "long", year: "numeric",
             });
 
             return (
               <div key={pedido._id} className="border border-[var(--color-cream-dark)]">
-                {/* Cabecera */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-cream-dark)] bg-[var(--color-cream)]">
                   <div>
                     <p className="text-xs tracking-widest uppercase text-[var(--color-text-muted)] mb-0.5">Pedido</p>
@@ -68,20 +63,14 @@ export default function MisPedidos() {
                   <div className="text-right">
                     <p className="text-xs text-[var(--color-text-muted)]">{fecha}</p>
                     {total > 0 && (
-                      <p className="text-sm font-semibold text-[var(--color-wine)] mt-0.5">
-                        {total.toFixed(2)} €
-                      </p>
+                      <p className="text-sm font-semibold text-[var(--color-wine)] mt-0.5">{total.toFixed(2)} €</p>
                     )}
                   </div>
                 </div>
 
-                {/* Líneas */}
                 <div className="px-6 py-4 flex flex-col gap-3">
                   {items.map((item, i) => {
-                    const imagenUrl = item.producto?.imatge
-                      ? `${BASE_UPLOADS}${item.producto.imatge.replace(/^uploads[\\/]/, "")}`
-                      : null;
-
+                    const imagenUrl = getImageUrl(item.producto?.imatge);
                     return (
                       <div key={i} className="flex items-center gap-4">
                         <div className="w-10 h-10 shrink-0 bg-[var(--color-cream-dark)] overflow-hidden">

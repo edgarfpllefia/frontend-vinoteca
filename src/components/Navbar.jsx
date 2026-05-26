@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
-
-import { BASE_UPLOADS } from "../config";
+import { getImageUrl } from "../config";
 
 export default function Navbar() {
   const { usuario, cerrarSesion, esEditor } = useAuth();
@@ -16,9 +15,7 @@ export default function Navbar() {
     navigate("/login");
   };
 
-  const avatarUrl = usuario?.foto
-    ? `${BASE_UPLOADS}${usuario.foto.replace(/^uploads[\\/]/, "")}`
-    : null;
+  const avatarUrl = getImageUrl(usuario?.foto);
 
   const navLinkClass = ({ isActive }) =>
     `text-sm tracking-wide transition-colors duration-200 ${
@@ -32,11 +29,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 
         {/* Logo */}
-        <Link
-          to="/"
-          className="flex items-center gap-2 text-white"
-          style={{ fontFamily: "var(--font-serif)" }}
-        >
+        <Link to="/" className="flex items-center gap-2 text-white" style={{ fontFamily: "var(--font-serif)" }}>
           <span className="text-[var(--color-gold)] text-xl">✦</span>
           <span className="text-lg font-semibold tracking-wide">Vinoteca</span>
         </Link>
@@ -70,11 +63,8 @@ export default function Navbar() {
 
               <Link to="/perfil" className="flex items-center gap-2 group">
                 {avatarUrl ? (
-                  <img
-                    src={avatarUrl}
-                    alt={usuario.name}
-                    className="w-8 h-8 rounded-full object-cover border-2 border-[var(--color-gold)] opacity-90 group-hover:opacity-100 transition"
-                  />
+                  <img src={avatarUrl} alt={usuario.name}
+                    className="w-8 h-8 rounded-full object-cover border-2 border-[var(--color-gold)] opacity-90 group-hover:opacity-100 transition" />
                 ) : (
                   <div className="w-8 h-8 rounded-full bg-[var(--color-wine-light)] border-2 border-[var(--color-gold)] flex items-center justify-center text-xs font-bold text-white">
                     {usuario.name?.charAt(0).toUpperCase()}
@@ -85,25 +75,16 @@ export default function Navbar() {
                 </span>
               </Link>
 
-              <button
-                onClick={handleLogout}
-                className="text-xs tracking-widest uppercase text-[var(--color-cream-dark)] hover:text-white border border-[var(--color-wine-light)] hover:border-white px-3 py-1.5 rounded transition"
-              >
+              <button onClick={handleLogout}
+                className="text-xs tracking-widest uppercase text-[var(--color-cream-dark)] hover:text-white border border-[var(--color-wine-light)] hover:border-white px-3 py-1.5 rounded transition">
                 Salir
               </button>
             </>
           ) : (
             <>
-              <Link
-                to="/login"
-                className="text-sm text-[var(--color-cream-dark)] hover:text-white transition"
-              >
-                Acceder
-              </Link>
-              <Link
-                to="/register"
-                className="text-sm bg-[var(--color-gold)] hover:bg-[var(--color-gold-light)] text-[var(--color-wine)] font-semibold px-4 py-1.5 rounded transition"
-              >
+              <Link to="/login" className="text-sm text-[var(--color-cream-dark)] hover:text-white transition">Acceder</Link>
+              <Link to="/register"
+                className="text-sm bg-[var(--color-gold)] hover:bg-[var(--color-gold-light)] text-[var(--color-wine)] font-semibold px-4 py-1.5 rounded transition">
                 Registrarse
               </Link>
             </>
@@ -111,10 +92,7 @@ export default function Navbar() {
         </div>
 
         {/* Hamburguesa móvil */}
-        <button
-          className="md:hidden text-white"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
+        <button className="md:hidden text-white" onClick={() => setMenuOpen(!menuOpen)}>
           <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             {menuOpen
               ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />

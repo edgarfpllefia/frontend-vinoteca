@@ -1,8 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
-
-import { BASE_UPLOADS } from "../config";
+import { getImageUrl } from "../config";
 
 export default function ProductCard({ producto, tipo }) {
   const { añadir } = useCart();
@@ -14,16 +13,12 @@ export default function ProductCard({ producto, tipo }) {
     añadir(producto, tipo);
   };
 
-  const imagenUrl = producto.imatge
-    ? `${BASE_UPLOADS}${producto.imatge.replace(/^uploads[\\/]/, "")}`
-    : null;
-
+  const imagenUrl = getImageUrl(producto.imatge);
   const rutaDetalle = tipo === "vino" ? `/vinos/${producto._id}` : `/cervezas/${producto._id}`;
   const accentColor = tipo === "vino" ? "var(--color-wine)" : "#92400e";
 
   return (
     <article className="bg-white flex flex-col group border border-[var(--color-cream-dark)] hover:border-[var(--color-gold)] transition-colors duration-300">
-      {/* Imagen */}
       <div className="overflow-hidden aspect-[3/4] bg-[var(--color-cream)]">
         {imagenUrl ? (
           <img
@@ -38,7 +33,6 @@ export default function ProductCard({ producto, tipo }) {
         )}
       </div>
 
-      {/* Contenido */}
       <div className="p-5 flex flex-col flex-1 gap-3">
         <div>
           <p className="text-xs tracking-widest uppercase opacity-50 mb-1" style={{ color: accentColor }}>
@@ -53,7 +47,7 @@ export default function ProductCard({ producto, tipo }) {
           <p className="text-xs text-[var(--color-text-muted)] mt-1">{producto.graduacio}% vol.</p>
           {producto.preu != null && (
             <p className="text-base font-semibold mt-1" style={{ color: accentColor }}>
-              {Number(producto.preu).toFixed(2)} €
+              {Number(producto.preu).toFixed(2)} €
             </p>
           )}
         </div>

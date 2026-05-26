@@ -3,8 +3,7 @@ import { getCervezas, deleteCerveza } from "../../services/cervezasService";
 import { useNavigate } from "react-router-dom";
 import { usePaginacion } from "../../hooks/usePaginacion";
 import Paginacion from "../../components/Paginacion";
-
-import { BASE_UPLOADS } from "../../config";
+import { getImageUrl } from "../../config";
 
 export default function AdminCervezas() {
   const [cervezas, setCervezas] = useState([]);
@@ -98,11 +97,7 @@ export default function AdminCervezas() {
                 <tr key={c._id} className="hover:bg-gray-50 transition-colors group">
                   <td className="px-5 py-3">
                     {c.imatge ? (
-                      <img
-                        src={`${BASE_UPLOADS}${c.imatge.replace(/^uploads[\\/]/, "")}`}
-                        alt={c.nom}
-                        className="w-10 h-10 object-cover"
-                      />
+                      <img src={getImageUrl(c.imatge)} alt={c.nom} className="w-10 h-10 object-cover" />
                     ) : (
                       <div className="w-10 h-10 bg-amber-50 flex items-center justify-center text-lg opacity-40">🍺</div>
                     )}
@@ -117,16 +112,12 @@ export default function AdminCervezas() {
                   <td className="px-5 py-3 text-gray-500 hidden md:table-cell">{c.graduacio}%</td>
                   <td className="px-5 py-3 text-right">
                     <div className="flex gap-3 justify-end opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button
-                        onClick={() => navigate(`/admin/cervezas/${c._id}/editar`)}
-                        className="text-xs text-amber-800 hover:underline font-medium"
-                      >
+                      <button onClick={() => navigate(`/admin/cervezas/${c._id}/editar`)}
+                        className="text-xs text-amber-800 hover:underline font-medium">
                         Editar
                       </button>
-                      <button
-                        onClick={() => handleDelete(c._id, c.nom)}
-                        className="text-xs text-red-500 hover:underline font-medium"
-                      >
+                      <button onClick={() => handleDelete(c._id, c.nom)}
+                        className="text-xs text-red-500 hover:underline font-medium">
                         Eliminar
                       </button>
                     </div>

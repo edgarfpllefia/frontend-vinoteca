@@ -3,8 +3,7 @@ import { getVinos, deleteVino } from "../../services/vinosService";
 import { useNavigate } from "react-router-dom";
 import { usePaginacion } from "../../hooks/usePaginacion";
 import Paginacion from "../../components/Paginacion";
-
-import { BASE_UPLOADS } from "../../config";
+import { getImageUrl } from "../../config";
 
 export default function AdminVinos() {
   const [vinos, setVinos] = useState([]);
@@ -39,7 +38,6 @@ export default function AdminVinos() {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Stats + acciones */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex gap-4">
           <div className="bg-white border border-gray-200 rounded px-5 py-3">
@@ -60,9 +58,7 @@ export default function AdminVinos() {
         </button>
       </div>
 
-      {/* Tabla */}
       <div className="bg-white border border-gray-200">
-        {/* Buscador */}
         <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-3">
           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -101,11 +97,7 @@ export default function AdminVinos() {
                 <tr key={v._id} className="hover:bg-gray-50 transition-colors group">
                   <td className="px-5 py-3">
                     {v.imatge ? (
-                      <img
-                        src={`${BASE_UPLOADS}${v.imatge.replace(/^uploads[\\/]/, "")}`}
-                        alt={v.nom}
-                        className="w-10 h-10 object-cover"
-                      />
+                      <img src={getImageUrl(v.imatge)} alt={v.nom} className="w-10 h-10 object-cover" />
                     ) : (
                       <div className="w-10 h-10 bg-[var(--color-cream-dark)] flex items-center justify-center text-lg opacity-40">🍷</div>
                     )}
@@ -120,16 +112,12 @@ export default function AdminVinos() {
                   <td className="px-5 py-3 text-gray-500 hidden md:table-cell">{v.graduacio}%</td>
                   <td className="px-5 py-3 text-right">
                     <div className="flex gap-3 justify-end opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button
-                        onClick={() => navigate(`/admin/vinos/${v._id}/editar`)}
-                        className="text-xs text-[var(--color-wine)] hover:underline font-medium"
-                      >
+                      <button onClick={() => navigate(`/admin/vinos/${v._id}/editar`)}
+                        className="text-xs text-[var(--color-wine)] hover:underline font-medium">
                         Editar
                       </button>
-                      <button
-                        onClick={() => handleDelete(v._id, v.nom)}
-                        className="text-xs text-red-500 hover:underline font-medium"
-                      >
+                      <button onClick={() => handleDelete(v._id, v.nom)}
+                        className="text-xs text-red-500 hover:underline font-medium">
                         Eliminar
                       </button>
                     </div>

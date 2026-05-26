@@ -3,7 +3,7 @@ import { getUsuarios, updateUsuario, deleteUsuario } from "../../services/usuari
 import { usePaginacion } from "../../hooks/usePaginacion";
 import Paginacion from "../../components/Paginacion";
 
-import { BASE_UPLOADS } from "../../config";
+import { getImageUrl } from "../../config";
 const ROLES = ["usuari", "editor", "admin"];
 
 const rolBadge = {
@@ -105,9 +105,7 @@ export default function AdminUsuarios() {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {paginados.map((u) => {
-                const avatarUrl = u.foto
-                  ? `${BASE_UPLOADS}${u.foto.replace(/^uploads[\\/]/, "")}`
-                  : null;
+                const avatarUrl = getImageUrl(u.foto);
                 return (
                   <tr key={u._id} className="hover:bg-gray-50 transition-colors group">
                     <td className="px-5 py-3">
